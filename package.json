@@ -10,18 +10,11 @@
   },
   "dependencies": {
     "@google/genai": "^1.40.0",
-<<<<<<< HEAD
     "@supabase/supabase-js": "^2.95.3",
     "lucide-react": "^0.563.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "recharts": "^3.7.0"
-=======
-    "react-dom": "^19.2.4",
-    "recharts": "^3.7.0",
-    "lucide-react": "^0.563.0",
-    "react": "^19.2.4"
->>>>>>> 968574459a05e021635a1331ea57c80743f7b377
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
