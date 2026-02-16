@@ -1,20 +1,11 @@
 
 import React, { useState, useEffect, useMemo, useRef, ChangeEvent } from 'react';
-<<<<<<< HEAD
 import {
   PlusCircle,
   TrendingUp,
   TrendingDown,
   Wallet,
   Trash2,
-=======
-import { 
-  PlusCircle, 
-  TrendingUp, 
-  TrendingDown, 
-  Wallet, 
-  Trash2, 
->>>>>>> 968574459a05e021635a1331ea57c80743f7b377
   ChevronLeft,
   Settings,
   X,
@@ -42,7 +33,6 @@ import {
   AtSign,
   Upload
 } from 'lucide-react';
-<<<<<<< HEAD
 import {
   PieChart,
   Pie,
@@ -60,33 +50,11 @@ import {
   Currency,
   User,
   FinancialControl,
-=======
-import { 
-  PieChart, 
-  Pie, 
-  Cell, 
-  ResponsiveContainer, 
-  Tooltip, 
-  Legend 
-} from 'recharts';
-import { 
-  Transaction, 
-  TransactionType, 
-  Category, 
-  TransactionFrequency, 
-  Language, 
-  Currency, 
-  User, 
-  FinancialControl, 
->>>>>>> 968574459a05e021635a1331ea57c80743f7b377
   ControlType,
   Reminder
 } from './types';
 import { db } from './db';
-<<<<<<< HEAD
 import { supabase } from './services/supabase';
-=======
->>>>>>> 968574459a05e021635a1331ea57c80743f7b377
 
 type ViewType = 'dashboard' | 'history' | 'charts' | 'reminders';
 
@@ -136,14 +104,6 @@ const translations = {
     to: 'Até',
     filter: 'Filtrar',
     back: 'Voltar',
-<<<<<<< HEAD
-=======
-    googleLogin: 'Login com Google',
-    editProfile: 'Editar Perfil',
-    saveProfile: 'Salvar Alterações',
-    nickname: 'Apelido',
-    avatarUrl: 'Foto de Perfil',
->>>>>>> 968574459a05e021635a1331ea57c80743f7b377
     email: 'E-mail',
     clickToChange: 'CLIQUE PARA ALTERAR FOTO'
   },
@@ -192,14 +152,6 @@ const translations = {
     to: 'To',
     filter: 'Filter',
     back: 'Back',
-<<<<<<< HEAD
-=======
-    googleLogin: 'Login with Google',
-    editProfile: 'Edit Profile',
-    saveProfile: 'Save Changes',
-    nickname: 'Nickname',
-    avatarUrl: 'Profile Picture',
->>>>>>> 968574459a05e021635a1331ea57c80743f7b377
     email: 'Email',
     clickToChange: 'CLICK TO CHANGE PHOTO'
   }
@@ -209,13 +161,8 @@ const CATEGORIES: Category[] = ['Alimentação', 'Moradia', 'Transporte', 'Lazer
 const CHART_COLORS = ['#10b981', '#3b82f6', '#ef4444'];
 
 const App: React.FC = () => {
-<<<<<<< HEAD
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [controls, setControls] = useState<FinancialControl[]>([]);
-=======
-  const [currentUser, setCurrentUser] = useState<User | null>(() => db.getCurrentUser());
-  const [controls, setControls] = useState<FinancialControl[]>(() => db.getControls());
->>>>>>> 968574459a05e021635a1331ea57c80743f7b377
   const [language, setLanguage] = useState<Language>(() => db.getLanguage());
 
   const [activeView, setActiveView] = useState<ViewType>('dashboard');
@@ -250,7 +197,6 @@ const App: React.FC = () => {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-<<<<<<< HEAD
   useEffect(() => {
     const initAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
@@ -321,11 +267,6 @@ const App: React.FC = () => {
     };
     fetchData();
   }, [currentUser]);
-
-=======
-  useEffect(() => { db.setCurrentUser(currentUser); }, [currentUser]);
-  useEffect(() => { db.saveControls(controls); }, [controls]);
->>>>>>> 968574459a05e021635a1331ea57c80743f7b377
   useEffect(() => { db.saveLanguage(language); }, [language]);
 
   useEffect(() => {
@@ -377,7 +318,6 @@ const App: React.FC = () => {
     return new Intl.NumberFormat(language, { style: 'currency', currency }).format(value);
   };
 
-<<<<<<< HEAD
   const handleAuthSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (authMode === 'signup') {
@@ -446,56 +386,10 @@ const App: React.FC = () => {
       return;
     }
 
-=======
-  const handleAuthSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (authMode === 'signup') {
-      if (authForm.password !== authForm.confirmPassword) { alert('As senhas não coincidem!'); return; }
-      const users = db.getRegisteredUsers();
-      if (users.find(u => u.email === authForm.email)) { alert('Este e-mail já está cadastrado!'); return; }
-      const newUser: User = { id: crypto.randomUUID(), name: authForm.name || authForm.nickname, nickname: authForm.nickname, email: authForm.email, avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${authForm.email}` };
-      db.saveNewUser({ ...newUser, password: authForm.password });
-      setCurrentUser(newUser);
-      setIsSettingsOpen(true); 
-    } else {
-      const users = db.getRegisteredUsers();
-      const userFound = users.find((u: any) => u.email === authForm.email && u.password === authForm.password);
-      if (userFound) { 
-        setCurrentUser({ id: userFound.id, name: userFound.name, nickname: userFound.nickname, email: userFound.email, avatar: userFound.avatar }); 
-      } 
-      else { alert('E-mail ou senha incorretos!'); }
-    }
-  };
-
-  const handleGoogleLogin = () => {
-    const googleUser: User = {
-      id: 'google_user_123',
-      name: 'Google User',
-      nickname: 'Google',
-      email: 'google@financeiro.com',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=google'
-    };
-    
-    const users = db.getRegisteredUsers();
-    if (!users.find(u => u.email === googleUser.email)) {
-      db.saveNewUser({ ...googleUser, provider: 'google' });
-      setIsSettingsOpen(true); 
-    }
-    
-    setCurrentUser(googleUser);
-  };
-
-  const handleSaveProfile = () => {
-    if (!currentUser) return;
->>>>>>> 968574459a05e021635a1331ea57c80743f7b377
     const updatedUser = {
       ...currentUser,
       name: profileName,
       nickname: profileNickname,
-<<<<<<< HEAD
-=======
-      email: profileEmail,
->>>>>>> 968574459a05e021635a1331ea57c80743f7b377
       avatar: profileAvatar
     };
     setCurrentUser(updatedUser);
@@ -513,7 +407,6 @@ const App: React.FC = () => {
     }
   };
 
-<<<<<<< HEAD
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setCurrentUser(null);
@@ -554,23 +447,11 @@ const App: React.FC = () => {
       investments: [],
       reminders: []
     };
-
-=======
-  const handleLogout = () => { setCurrentUser(null); setSelectedControlId(null); setActiveView('dashboard'); setSidebarOpen(false); };
-
-  const handleAddControl = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const name = formData.get('name') as string;
-    if (!name) return;
-    const newControl: FinancialControl = { id: crypto.randomUUID(), name, currency: formData.get('currency') as Currency, type: formData.get('type') as ControlType, ownerId: currentUser!.id, members: [], transactions: [], investments: [], reminders: [] };
->>>>>>> 968574459a05e021635a1331ea57c80743f7b377
     setControls([...controls, newControl]);
     setIsCreatingControl(false);
     setSelectedControlId(newControl.id);
   };
 
-<<<<<<< HEAD
   const addTransaction = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!desc || !amount || !selectedControlId) return;
@@ -603,17 +484,10 @@ const App: React.FC = () => {
       date: data.date
     };
 
-=======
-  const addTransaction = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!desc || !amount || !selectedControlId) return;
-    const newTr: Transaction = { id: crypto.randomUUID(), description: desc, amount: parseFloat(amount), type, category: cat, frequency: TransactionFrequency.PONTUAL, date: new Date(trDate + 'T12:00:00Z').toISOString() };
->>>>>>> 968574459a05e021635a1331ea57c80743f7b377
     setControls(controls.map(c => c.id === selectedControlId ? { ...c, transactions: [newTr, ...(c.transactions || [])] } : c));
     setDesc(''); setAmount(''); setTrDate(new Date().toISOString().split('T')[0]);
   };
 
-<<<<<<< HEAD
   const handleAddReminder = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!remDesc || !remAmount || !selectedControlId) return;
@@ -639,18 +513,10 @@ const App: React.FC = () => {
       amount: data.amount,
       date: data.date
     };
-
-=======
-  const handleAddReminder = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!remDesc || !remAmount || !selectedControlId) return;
-    const reminder: Reminder = { id: crypto.randomUUID(), description: remDesc, amount: parseFloat(remAmount), date: new Date(remDate + 'T12:00:00Z').toISOString() };
->>>>>>> 968574459a05e021635a1331ea57c80743f7b377
     setControls(controls.map(c => c.id === selectedControlId ? { ...c, reminders: [reminder, ...(c.reminders || [])] } : c));
     setRemDesc(''); setRemAmount('');
   };
 
-<<<<<<< HEAD
   const handlePayReminder = async (reminder: Reminder) => {
     if (!selectedControlId) return;
 
@@ -721,35 +587,11 @@ const App: React.FC = () => {
       <div className={`fixed left-0 top-0 h-full bg-white border-r border-slate-100 transition-all duration-300 z-[60] flex flex-col 
         ${sidebarOpen ? 'w-64 translate-x-0 shadow-2xl' : 'w-0 -translate-x-full md:w-20 md:translate-x-0'} 
         overflow-hidden`}>
-
-=======
-  const handlePayReminder = (reminder: Reminder) => {
-    if (!selectedControlId) return;
-    const newTr: Transaction = { id: crypto.randomUUID(), description: reminder.description, amount: reminder.amount, type: TransactionType.EXPENSE, category: 'Outros', frequency: TransactionFrequency.PONTUAL, date: new Date().toISOString() };
-    setControls(controls.map(c => c.id === selectedControlId ? { ...c, transactions: [newTr, ...(c.transactions || [])], reminders: (c.reminders || []).filter(r => r.id !== reminder.id) } : c));
-  };
-
-  const Sidebar = () => (
-    <>
-      <div 
-        className={`fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[55] transition-opacity md:hidden ${sidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
-        onClick={() => setSidebarOpen(false)}
-      />
-      
-      <div className={`fixed left-0 top-0 h-full bg-white border-r border-slate-100 transition-all duration-300 z-[60] flex flex-col 
-        ${sidebarOpen ? 'w-64 translate-x-0 shadow-2xl' : 'w-0 -translate-x-full md:w-20 md:translate-x-0'} 
-        overflow-hidden`}>
-        
->>>>>>> 968574459a05e021635a1331ea57c80743f7b377
         <div className="h-20 flex items-center px-5 border-b border-slate-50 gap-3">
           <div className="bg-emerald-600 p-2 rounded-lg shrink-0"><Wallet className="text-white w-5 h-5" /></div>
           {sidebarOpen && <h1 className="text-sm font-black text-slate-800 truncate">{t.appTitle}</h1>}
         </div>
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> 968574459a05e021635a1331ea57c80743f7b377
         <nav className="flex-grow p-2 space-y-1">
           <button onClick={() => { setActiveView('dashboard'); setSidebarOpen(false); }} className={`w-full flex items-center justify-start gap-4 p-3 rounded-xl transition-all ${activeView === 'dashboard' ? 'bg-emerald-50 text-emerald-600 font-bold' : 'text-slate-400 hover:bg-slate-50'}`}>
             <LayoutDashboard size={18} className="shrink-0" />
@@ -768,11 +610,7 @@ const App: React.FC = () => {
             {sidebarOpen && <span className="text-[13px] text-left truncate leading-tight">{t.reminders}</span>}
           </button>
         </nav>
-<<<<<<< HEAD
 
-=======
-        
->>>>>>> 968574459a05e021635a1331ea57c80743f7b377
         <div className="p-2 border-t border-slate-50">
           <button onClick={() => { setIsSettingsOpen(true); setSidebarOpen(false); }} className="w-full flex items-center justify-start gap-4 p-3 rounded-xl text-slate-400 hover:bg-slate-50 transition-all">
             <Settings size={18} className="shrink-0" />
@@ -804,7 +642,6 @@ const App: React.FC = () => {
           <form onSubmit={handleAuthSubmit} className="px-4 py-2 space-y-3">
             {authMode === 'signup' && (
               <div className="grid grid-cols-2 gap-2">
-<<<<<<< HEAD
                 <input type="text" required value={authForm.name} onChange={(e) => setAuthForm({ ...authForm, name: e.target.value })} className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl outline-none text-[11px] text-slate-800 placeholder:text-slate-400" placeholder="Nome" />
                 <input type="text" required value={authForm.nickname} onChange={(e) => setAuthForm({ ...authForm, nickname: e.target.value })} className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl outline-none text-[11px] text-slate-800 placeholder:text-slate-400" placeholder="Apelido" />
               </div>
@@ -815,23 +652,6 @@ const App: React.FC = () => {
               <input type="password" required value={authForm.confirmPassword} onChange={(e) => setAuthForm({ ...authForm, confirmPassword: e.target.value })} className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl outline-none text-[11px] text-slate-800 placeholder:text-slate-400" placeholder="Confirmar Senha" />
             )}
             <button type="submit" className="w-full py-3.5 bg-slate-900 text-white rounded-xl font-bold text-sm hover:bg-emerald-600 transition-all shadow-md">{authMode === 'login' ? 'Entrar' : 'Cadastrar'}</button>
-=======
-                <input type="text" required value={authForm.name} onChange={(e) => setAuthForm({...authForm, name: e.target.value})} className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl outline-none text-[11px] text-slate-800 placeholder:text-slate-400" placeholder="Nome" />
-                <input type="text" required value={authForm.nickname} onChange={(e) => setAuthForm({...authForm, nickname: e.target.value})} className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl outline-none text-[11px] text-slate-800 placeholder:text-slate-400" placeholder="Apelido" />
-              </div>
-            )}
-            <input type="email" required value={authForm.email} onChange={(e) => setAuthForm({...authForm, email: e.target.value})} className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl outline-none text-[11px] text-slate-800 placeholder:text-slate-400" placeholder="E-mail" />
-            <input type="password" required value={authForm.password} onChange={(e) => setAuthForm({...authForm, password: e.target.value})} className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl outline-none text-[11px] text-slate-800 placeholder:text-slate-400" placeholder="Senha" />
-            <button type="submit" className="w-full py-3.5 bg-slate-900 text-white rounded-xl font-bold text-sm hover:bg-emerald-600 transition-all shadow-md">{authMode === 'login' ? 'Entrar' : 'Cadastrar'}</button>
-            <div className="relative py-1">
-              <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-100"></div></div>
-              <div className="relative flex justify-center text-[9px] uppercase font-black tracking-widest"><span className="bg-white px-3 text-slate-300">OU</span></div>
-            </div>
-            <button type="button" onClick={handleGoogleLogin} className="w-full py-3 bg-white border border-slate-200 text-slate-600 rounded-xl font-bold text-[11px] hover:bg-slate-50 transition-all flex items-center justify-center gap-2">
-              <svg className="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" /><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" /><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" /><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" /></svg>
-              {t.googleLogin}
-            </button>
->>>>>>> 968574459a05e021635a1331ea57c80743f7b377
           </form>
         </div>
       </div>
@@ -847,20 +667,13 @@ const App: React.FC = () => {
         </div>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2 group cursor-pointer" onClick={() => setIsSettingsOpen(true)}>
-<<<<<<< HEAD
             <img src={currentUser.avatar} className="w-7 h-7 rounded-full border border-emerald-50" alt="avatar" />
             <div className="hidden md:flex flex-col text-left">
               <span className="font-bold text-[10px] text-slate-800 leading-none">{currentUser.name}</span>
             </div>
-=======
-             <img src={currentUser.avatar} className="w-7 h-7 rounded-full border border-emerald-50" alt="avatar" />
-             <div className="hidden md:flex flex-col text-left">
-                <span className="font-bold text-[10px] text-slate-800 leading-none">{currentUser.name}</span>
-             </div>
->>>>>>> 968574459a05e021635a1331ea57c80743f7b377
           </div>
-          <button onClick={handleLogout} className="p-1.5 text-slate-400 hover:text-red-500 rounded-lg transition-all"><LogOut size={18} /></button>
         </div>
+        <button onClick={handleLogout} className="p-1.5 text-slate-400 hover:text-red-500 rounded-lg transition-all"><LogOut size={18} /></button>
       </header>
       <main className="max-w-7xl mx-auto px-4 md:px-8 pb-10 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -869,7 +682,6 @@ const App: React.FC = () => {
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {controls.map(c => (
-<<<<<<< HEAD
             <div key={c.id} onClick={() => { setSelectedControlId(c.id); setActiveView('dashboard'); }} className="group bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-lg cursor-pointer transition-all relative overflow-hidden">
               <button
                 onClick={(e) => handleDeleteControl(e, c.id)}
@@ -878,33 +690,31 @@ const App: React.FC = () => {
                 <Trash2 size={14} />
               </button>
               <div className={`p-2.5 rounded-lg w-fit mb-3 ${c.type === ControlType.INDIVIDUAL ? 'bg-emerald-50 text-emerald-600' : 'bg-purple-50 text-purple-600'}`}>{c.type === ControlType.INDIVIDUAL ? <PlusCircle size={20} /> : <Users size={20} />}</div>
-=======
-            <div key={c.id} onClick={() => { setSelectedControlId(c.id); setActiveView('dashboard'); }} className="group bg-white p-4 rounded-2xl border border-slate-100 shadow-sm hover:shadow-lg cursor-pointer transition-all">
-              <div className={`p-2.5 rounded-lg w-fit mb-3 ${c.type === ControlType.INDIVIDUAL ? 'bg-emerald-50 text-emerald-600' : 'bg-purple-50 text-purple-600'}`}>{c.type === ControlType.INDIVIDUAL ? <PlusCircle size={20}/> : <Users size={20}/>}</div>
->>>>>>> 968574459a05e021635a1331ea57c80743f7b377
               <h3 className="text-sm font-bold text-slate-800 mb-0.5 truncate group-hover:text-emerald-600">{c.name}</h3>
               <div className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">{c.currency}</div>
             </div>
           ))}
         </div>
       </main>
-      {isCreatingControl && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
-          <div className="bg-white rounded-3xl w-full max-w-sm p-6 shadow-2xl border border-slate-100 animate-in zoom-in">
-            <div className="flex items-center justify-between mb-5"><h2 className="text-lg font-black text-slate-800">{t.newControl}</h2><button onClick={() => setIsCreatingControl(false)} className="p-1.5 hover:bg-slate-50 rounded-full text-slate-400"><X size={18} /></button></div>
-            <form onSubmit={handleAddControl} className="space-y-4">
-              <input name="name" required placeholder="Nome do Controle" className="w-full px-4 py-3 bg-slate-50 border border-slate-50 rounded-xl outline-none font-bold text-xs text-slate-800" />
-              <div className="grid grid-cols-2 gap-3">
-                <select name="currency" className="w-full px-3 py-3 bg-slate-50 border border-slate-50 rounded-xl outline-none font-bold text-[10px] text-slate-800">
-                  <option value="BRL">BRL</option><option value="USD">USD</option><option value="EUR">EUR</option>
-                </select>
-                <select name="type" className="w-full px-3 py-3 bg-slate-50 border border-slate-50 rounded-xl outline-none font-bold text-[10px] text-slate-800"><option value={ControlType.INDIVIDUAL}>{t.individual}</option><option value={ControlType.GRUPO}>{t.group}</option></select>
-              </div>
-              <button type="submit" className="w-full py-3.5 bg-emerald-600 text-white rounded-xl font-black text-xs shadow-md">Criar Agora</button>
-            </form>
+      {
+        isCreatingControl && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
+            <div className="bg-white rounded-3xl w-full max-w-sm p-6 shadow-2xl border border-slate-100 animate-in zoom-in">
+              <div className="flex items-center justify-between mb-5"><h2 className="text-lg font-black text-slate-800">{t.newControl}</h2><button onClick={() => setIsCreatingControl(false)} className="p-1.5 hover:bg-slate-50 rounded-full text-slate-400"><X size={18} /></button></div>
+              <form onSubmit={handleAddControl} className="space-y-4">
+                <input name="name" required placeholder="Nome do Controle" className="w-full px-4 py-3 bg-slate-50 border border-slate-50 rounded-xl outline-none font-bold text-xs text-slate-800" />
+                <div className="grid grid-cols-2 gap-3">
+                  <select name="currency" className="w-full px-3 py-3 bg-slate-50 border border-slate-50 rounded-xl outline-none font-bold text-[10px] text-slate-800">
+                    <option value="BRL">BRL</option><option value="USD">USD</option><option value="EUR">EUR</option>
+                  </select>
+                  <select name="type" className="w-full px-3 py-3 bg-slate-50 border border-slate-50 rounded-xl outline-none font-bold text-[10px] text-slate-800"><option value={ControlType.INDIVIDUAL}>{t.individual}</option><option value={ControlType.GRUPO}>{t.group}</option></select>
+                </div>
+                <button type="submit" className="w-full py-3.5 bg-emerald-600 text-white rounded-xl font-black text-xs shadow-md">Criar Agora</button>
+              </form>
+            </div>
           </div>
-        </div>
-      )}
+        )
+      }
     </div>
   );
 
@@ -918,11 +728,7 @@ const App: React.FC = () => {
             <h1 className="text-sm font-black text-slate-800 truncate max-w-[140px] md:max-w-none">{currentControl?.name}</h1>
           </div>
           <div className="flex items-center gap-2 group cursor-pointer" onClick={() => setIsSettingsOpen(true)}>
-<<<<<<< HEAD
             <img src={currentUser.avatar} className="w-7 h-7 rounded-full border border-emerald-50 group-hover:border-emerald-500 transition-all" alt="avatar" />
-=======
-             <img src={currentUser.avatar} className="w-7 h-7 rounded-full border border-emerald-50 group-hover:border-emerald-500 transition-all" alt="avatar" />
->>>>>>> 968574459a05e021635a1331ea57c80743f7b377
           </div>
         </header>
 
@@ -931,7 +737,6 @@ const App: React.FC = () => {
             <div className="space-y-4 md:space-y-6 animate-in fade-in duration-500">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <button onClick={() => { setActiveView('history'); setHistoryTypeFilter(TransactionType.INCOME); }} className="bg-white p-3 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-start gap-1.5 group hover:shadow-md text-left">
-<<<<<<< HEAD
                   <div className="p-1.5 bg-emerald-50 text-emerald-500 rounded-lg group-hover:scale-110"><TrendingUp size={16} /></div>
                   <div><p className="text-[8px] font-black text-slate-400 uppercase tracking-widest">{t.income}</p><p className="text-sm font-black text-emerald-600 truncate w-full">{formatCurrency(totals.income)}</p></div>
                 </button>
@@ -945,31 +750,12 @@ const App: React.FC = () => {
                 </button>
                 <div className="bg-slate-900 p-3 rounded-2xl shadow-lg text-white flex flex-col items-start gap-1.5">
                   <div className="p-1.5 bg-white/10 text-white rounded-lg"><Wallet size={16} /></div>
-=======
-                  <div className="p-1.5 bg-emerald-50 text-emerald-500 rounded-lg group-hover:scale-110"><TrendingUp size={16}/></div>
-                  <div><p className="text-[8px] font-black text-slate-400 uppercase tracking-widest">{t.income}</p><p className="text-sm font-black text-emerald-600 truncate w-full">{formatCurrency(totals.income)}</p></div>
-                </button>
-                <button onClick={() => { setActiveView('history'); setHistoryTypeFilter(TransactionType.INVESTMENT); }} className="bg-white p-3 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-start gap-1.5 group hover:shadow-md text-left">
-                  <div className="p-1.5 bg-blue-50 text-blue-500 rounded-lg group-hover:scale-110"><Briefcase size={16}/></div>
-                  <div><p className="text-[8px] font-black text-slate-400 uppercase tracking-widest">{t.investments}</p><p className="text-sm font-black text-blue-600 truncate w-full">{formatCurrency(totals.investment)}</p></div>
-                </button>
-                <button onClick={() => { setActiveView('history'); setHistoryTypeFilter(TransactionType.EXPENSE); }} className="bg-white p-3 rounded-2xl border border-slate-100 shadow-sm flex flex-col items-start gap-1.5 group hover:shadow-md text-left">
-                  <div className="p-1.5 bg-red-50 text-red-500 rounded-lg group-hover:scale-110"><TrendingDown size={16}/></div>
-                  <div><p className="text-[8px] font-black text-slate-400 uppercase tracking-widest">{t.expense}</p><p className="text-sm font-black text-red-600 truncate w-full">{formatCurrency(totals.expense)}</p></div>
-                </button>
-                <div className="bg-slate-900 p-3 rounded-2xl shadow-lg text-white flex flex-col items-start gap-1.5">
-                  <div className="p-1.5 bg-white/10 text-white rounded-lg"><Wallet size={16}/></div>
->>>>>>> 968574459a05e021635a1331ea57c80743f7b377
                   <div><p className="text-[8px] font-black opacity-50 uppercase tracking-widest">{t.balance}</p><p className="text-sm font-black truncate w-full">{formatCurrency(totals.balance)}</p></div>
                 </div>
               </div>
 
               <div className="bg-white p-4 md:p-6 rounded-[1.5rem] border border-slate-100 shadow-sm">
-<<<<<<< HEAD
                 <h2 className="text-sm font-black flex items-center gap-2 text-slate-800 mb-4"><PlusCircle size={18} className="text-emerald-500" /> {t.newTransaction}</h2>
-=======
-                <h2 className="text-sm font-black flex items-center gap-2 text-slate-800 mb-4"><PlusCircle size={18} className="text-emerald-500"/> {t.newTransaction}</h2>
->>>>>>> 968574459a05e021635a1331ea57c80743f7b377
                 <form onSubmit={addTransaction} className="space-y-3">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     <input value={desc} onChange={(e) => setDesc(e.target.value)} placeholder={t.description} className="w-full px-3 py-2.5 bg-slate-50 border border-slate-50 rounded-xl outline-none font-medium text-[11px] text-slate-800 placeholder:text-slate-400" required />
@@ -984,117 +770,95 @@ const App: React.FC = () => {
                 </form>
               </div>
             </div>
-          )}
+          )
+          }
 
-          {activeView === 'history' && (
-            <div className="space-y-4 md:space-y-6 animate-in slide-in-from-bottom-2 duration-500">
-              <div className="bg-white p-4 md:p-6 rounded-[1.5rem] border border-slate-100 shadow-sm">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
-                  <h2 className="text-base font-black text-slate-800">{t.history}</h2>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <div className="flex items-center gap-1.5 bg-slate-50 p-1 rounded-lg border border-slate-100">
-                      <Filter size={12} className="text-slate-400 ml-1" />
-                      <select value={historyTypeFilter} onChange={(e) => setHistoryTypeFilter(e.target.value)} className="bg-transparent font-bold text-[9px] outline-none px-1 py-1 text-slate-800">
-                        <option value="ALL">{t.all}</option>
-                        <option value={TransactionType.INCOME}>{t.incomeLabel}</option>
-                        <option value={TransactionType.EXPENSE}>{t.expenseLabel}</option>
-                        <option value={TransactionType.INVESTMENT}>{t.investmentLabel}</option>
-                      </select>
+          {
+            activeView === 'history' && (
+              <div className="space-y-4 md:space-y-6 animate-in slide-in-from-bottom-2 duration-500">
+                <div className="bg-white p-4 md:p-6 rounded-[1.5rem] border border-slate-100 shadow-sm">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
+                    <h2 className="text-base font-black text-slate-800">{t.history}</h2>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <div className="flex items-center gap-1.5 bg-slate-50 p-1 rounded-lg border border-slate-100">
+                        <Filter size={12} className="text-slate-400 ml-1" />
+                        <select value={historyTypeFilter} onChange={(e) => setHistoryTypeFilter(e.target.value)} className="bg-transparent font-bold text-[9px] outline-none px-1 py-1 text-slate-800">
+                          <option value="ALL">{t.all}</option>
+                          <option value={TransactionType.INCOME}>{t.incomeLabel}</option>
+                          <option value={TransactionType.EXPENSE}>{t.expenseLabel}</option>
+                          <option value={TransactionType.INVESTMENT}>{t.investmentLabel}</option>
+                        </select>
+                      </div>
+                      <div className="flex items-center gap-1.5 bg-slate-50 p-1 rounded-lg border border-slate-100 px-2">
+                        <Calendar size={12} className="text-slate-400" />
+                        <select value={selectedMonth} onChange={(e) => setSelectedMonth(parseInt(e.target.value))} className="bg-transparent font-bold text-[9px] outline-none px-0.5 text-slate-800">{t.months.map((m, i) => <option key={m} value={i}>{m}</option>)}</select>
+                        <input type="number" value={selectedYear} onChange={(e) => setSelectedYear(parseInt(e.target.value))} className="bg-transparent font-bold text-[9px] outline-none w-10 text-center text-slate-800" />
+                      </div>
                     </div>
+                  </div>
+                  <div className="overflow-x-auto rounded-lg border border-slate-50">
+                    <table className="w-full text-left min-w-[420px]">
+                      <thead className="bg-[#fafbfc]"><tr><th className="px-3 py-2 text-[8px] font-black text-slate-400 uppercase">Descrição</th><th className="px-3 py-2 text-[8px] font-black text-slate-400 uppercase text-right">Valor</th></tr></thead>
+                      <tbody className="divide-y divide-slate-50">
+                        {advancedFilteredTransactions.map(tr => (
+                          <tr key={tr.id} className="hover:bg-slate-50 transition-all group">
+                            <td className="px-3 py-2.5"><div className="flex items-center gap-2"><div className={`p-1 rounded-md ${tr.type === TransactionType.INCOME ? 'bg-emerald-50 text-emerald-500' : tr.type === TransactionType.INVESTMENT ? 'bg-blue-50 text-blue-500' : 'bg-red-50 text-red-500'}`}>{tr.type === TransactionType.INCOME ? <TrendingUp size={10} /> : tr.type === TransactionType.INVESTMENT ? <Briefcase size={10} /> : <TrendingDown size={10} />}</div><div className="flex flex-col"><span className="font-bold text-slate-800 text-[11px] truncate max-w-[100px]">{tr.description}</span><span className="text-[8px] text-slate-400 font-medium uppercase tracking-tight">{tr.category} • {new Date(tr.date).toLocaleDateString()}</span></div></div></td>
+                            <td className={`px-3 py-2.5 text-right font-black text-[12px] ${tr.type === TransactionType.INCOME ? 'text-emerald-600' : tr.type === TransactionType.INVESTMENT ? 'text-blue-600' : 'text-slate-800'}`}>
+                              <div className="flex items-center justify-end gap-2">
+                                <span>{tr.type === TransactionType.INCOME ? '+' : '-'}{formatCurrency(tr.amount)}</span>
+                                <button onClick={() => handleDeleteTransaction(tr.id)} className="opacity-0 group-hover:opacity-100 p-1 text-slate-300 hover:text-red-500 transition-all"><Trash2 size={12} /></button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                        {advancedFilteredTransactions.length === 0 && <tr><td colSpan={2} className="p-6 text-center text-slate-400 text-[10px] italic">{t.noTransactions}</td></tr>}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            )
+          }
+
+          {
+            activeView === 'charts' && (
+              <div className="space-y-4 md:space-y-6 animate-in slide-in-from-bottom-2 duration-500">
+                <div className="bg-white p-4 md:p-6 rounded-[1.5rem] border border-slate-100 shadow-sm">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
+                    <h2 className="text-base font-black text-slate-800">{t.movementChart}</h2>
                     <div className="flex items-center gap-1.5 bg-slate-50 p-1 rounded-lg border border-slate-100 px-2">
                       <Calendar size={12} className="text-slate-400" />
                       <select value={selectedMonth} onChange={(e) => setSelectedMonth(parseInt(e.target.value))} className="bg-transparent font-bold text-[9px] outline-none px-0.5 text-slate-800">{t.months.map((m, i) => <option key={m} value={i}>{m}</option>)}</select>
                       <input type="number" value={selectedYear} onChange={(e) => setSelectedYear(parseInt(e.target.value))} className="bg-transparent font-bold text-[9px] outline-none w-10 text-center text-slate-800" />
                     </div>
                   </div>
-                </div>
-                <div className="overflow-x-auto rounded-lg border border-slate-50">
-                  <table className="w-full text-left min-w-[420px]">
-                    <thead className="bg-[#fafbfc]"><tr><th className="px-3 py-2 text-[8px] font-black text-slate-400 uppercase">Descrição</th><th className="px-3 py-2 text-[8px] font-black text-slate-400 uppercase text-right">Valor</th></tr></thead>
-                    <tbody className="divide-y divide-slate-50">
-                      {advancedFilteredTransactions.map(tr => (
-<<<<<<< HEAD
-                        <tr key={tr.id} className="hover:bg-slate-50 transition-all group">
-                          <td className="px-3 py-2.5"><div className="flex items-center gap-2"><div className={`p-1 rounded-md ${tr.type === TransactionType.INCOME ? 'bg-emerald-50 text-emerald-500' : tr.type === TransactionType.INVESTMENT ? 'bg-blue-50 text-blue-500' : 'bg-red-50 text-red-500'}`}>{tr.type === TransactionType.INCOME ? <TrendingUp size={10} /> : tr.type === TransactionType.INVESTMENT ? <Briefcase size={10} /> : <TrendingDown size={10} />}</div><div className="flex flex-col"><span className="font-bold text-slate-800 text-[11px] truncate max-w-[100px]">{tr.description}</span><span className="text-[8px] text-slate-400 font-medium uppercase tracking-tight">{tr.category} • {new Date(tr.date).toLocaleDateString()}</span></div></div></td>
-                          <td className={`px-3 py-2.5 text-right font-black text-[12px] ${tr.type === TransactionType.INCOME ? 'text-emerald-600' : tr.type === TransactionType.INVESTMENT ? 'text-blue-600' : 'text-slate-800'}`}>
-                            <div className="flex items-center justify-end gap-2">
-                              <span>{tr.type === TransactionType.INCOME ? '+' : '-'}{formatCurrency(tr.amount)}</span>
-                              <button onClick={() => handleDeleteTransaction(tr.id)} className="opacity-0 group-hover:opacity-100 p-1 text-slate-300 hover:text-red-500 transition-all"><Trash2 size={12} /></button>
-                            </div>
-                          </td>
-=======
-                        <tr key={tr.id} className="hover:bg-slate-50 transition-all">
-                          <td className="px-3 py-2.5"><div className="flex items-center gap-2"><div className={`p-1 rounded-md ${tr.type === TransactionType.INCOME ? 'bg-emerald-50 text-emerald-500' : tr.type === TransactionType.INVESTMENT ? 'bg-blue-50 text-blue-500' : 'bg-red-50 text-red-500'}`}>{tr.type === TransactionType.INCOME ? <TrendingUp size={10}/> : tr.type === TransactionType.INVESTMENT ? <Briefcase size={10}/> : <TrendingDown size={10}/>}</div><div className="flex flex-col"><span className="font-bold text-slate-800 text-[11px] truncate max-w-[100px]">{tr.description}</span><span className="text-[8px] text-slate-400 font-medium uppercase tracking-tight">{tr.category} • {new Date(tr.date).toLocaleDateString()}</span></div></div></td>
-                          <td className={`px-3 py-2.5 text-right font-black text-[12px] ${tr.type === TransactionType.INCOME ? 'text-emerald-600' : tr.type === TransactionType.INVESTMENT ? 'text-blue-600' : 'text-slate-800'}`}>{tr.type === TransactionType.INCOME ? '+' : '-'}{formatCurrency(tr.amount)}</td>
->>>>>>> 968574459a05e021635a1331ea57c80743f7b377
-                        </tr>
-                      ))}
-                      {advancedFilteredTransactions.length === 0 && <tr><td colSpan={2} className="p-6 text-center text-slate-400 text-[10px] italic">{t.noTransactions}</td></tr>}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeView === 'charts' && (
-            <div className="space-y-4 md:space-y-6 animate-in slide-in-from-bottom-2 duration-500">
-              <div className="bg-white p-4 md:p-6 rounded-[1.5rem] border border-slate-100 shadow-sm">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
-                  <h2 className="text-base font-black text-slate-800">{t.movementChart}</h2>
-                  <div className="flex items-center gap-1.5 bg-slate-50 p-1 rounded-lg border border-slate-100 px-2">
-                    <Calendar size={12} className="text-slate-400" />
-                    <select value={selectedMonth} onChange={(e) => setSelectedMonth(parseInt(e.target.value))} className="bg-transparent font-bold text-[9px] outline-none px-0.5 text-slate-800">{t.months.map((m, i) => <option key={m} value={i}>{m}</option>)}</select>
-                    <input type="number" value={selectedYear} onChange={(e) => setSelectedYear(parseInt(e.target.value))} className="bg-transparent font-bold text-[9px] outline-none w-10 text-center text-slate-800" />
+                  <div className="h-[260px] md:h-[380px] flex items-center justify-center">
+                    {movementChartData.length > 0 ? (
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie data={movementChartData} cx="50%" cy="50%" innerRadius={50} outerRadius={80} paddingAngle={4} dataKey="value" labelLine={false} label={({ percent }) => `${(percent * 100).toFixed(0)}%`}>
+                            {movementChartData.map((entry, index) => {
+                              let color = entry.name === t.incomeLabel ? CHART_COLORS[0] : entry.name === t.investmentLabel ? CHART_COLORS[1] : CHART_COLORS[2];
+                              return <Cell key={`cell-${index}`} fill={color} />;
+                            })}
+                          </Pie>
+                          <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', fontSize: '10px' }} formatter={(v: number) => formatCurrency(v)} />
+                          <Legend verticalAlign="bottom" height={30} iconType="circle" wrapperStyle={{ fontWeight: 'bold', fontSize: '9px', paddingTop: '10px' }} />
+                        </PieChart>
+                      </ResponsiveContainer>
+                    ) : (
+                      <div className="text-center text-slate-400 italic space-y-2"><PieChartIcon size={40} className="mx-auto opacity-20" /><p className="text-[10px]">{t.noTransactions}</p></div>
+                    )}
                   </div>
                 </div>
-                <div className="h-[260px] md:h-[380px] flex items-center justify-center">
-                  {movementChartData.length > 0 ? (
-                    <ResponsiveContainer width="100%" height="100%">
-                      <PieChart>
-                        <Pie data={movementChartData} cx="50%" cy="50%" innerRadius={50} outerRadius={80} paddingAngle={4} dataKey="value" labelLine={false} label={({ percent }) => `${(percent * 100).toFixed(0)}%`}>
-                          {movementChartData.map((entry, index) => {
-                            let color = entry.name === t.incomeLabel ? CHART_COLORS[0] : entry.name === t.investmentLabel ? CHART_COLORS[1] : CHART_COLORS[2];
-                            return <Cell key={`cell-${index}`} fill={color} />;
-                          })}
-                        </Pie>
-                        <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', fontSize: '10px' }} formatter={(v: number) => formatCurrency(v)} />
-                        <Legend verticalAlign="bottom" height={30} iconType="circle" wrapperStyle={{ fontWeight: 'bold', fontSize: '9px', paddingTop: '10px' }} />
-                      </PieChart>
-                    </ResponsiveContainer>
-                  ) : (
-                    <div className="text-center text-slate-400 italic space-y-2"><PieChartIcon size={40} className="mx-auto opacity-20" /><p className="text-[10px]">{t.noTransactions}</p></div>
-                  )}
-                </div>
               </div>
-            </div>
-          )}
+            )
+          }
 
-          {activeView === 'reminders' && (
-            <div className="space-y-4 md:space-y-6 animate-in slide-in-from-bottom-2 duration-500">
-<<<<<<< HEAD
-              <div className="bg-white p-4 md:p-6 rounded-[1.5rem] border border-slate-100 shadow-sm">
-                <h2 className="text-base font-black text-slate-800 mb-4">{t.reminders}</h2>
-                <form onSubmit={handleAddReminder} className="grid grid-cols-1 md:grid-cols-3 gap-2 bg-slate-50 p-3 rounded-xl mb-4 border border-slate-100">
-                  <input value={remDesc} onChange={(e) => setRemDesc(e.target.value)} placeholder={t.description} className="w-full px-3 py-2.5 bg-white rounded-lg outline-none text-[10px] text-slate-800 placeholder:text-slate-400" required />
-                  <input type="number" step="0.01" value={remAmount} onChange={(e) => setRemAmount(e.target.value)} placeholder={t.amount} className="w-full px-3 py-2.5 bg-white rounded-lg outline-none text-[10px] text-slate-800 placeholder:text-slate-400" required />
-                  <input type="date" value={remDate} onChange={(e) => setRemDate(e.target.value)} className="w-full px-3 py-2.5 bg-white rounded-lg outline-none text-[10px] text-slate-800" required />
-                  <button type="submit" className="md:col-span-3 py-2.5 bg-blue-600 text-white rounded-lg font-bold text-[10px] shadow-sm">Adicionar Lembrete</button>
-                </form>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                  {(currentControl?.reminders || []).map(rem => (
-                    <div key={rem.id} className="flex items-center justify-between p-3 bg-white border border-slate-100 rounded-xl group hover:shadow-sm transition-all">
-                      <div className="flex flex-col"><p className="font-bold text-slate-800 text-[11px] mb-0.5 truncate max-w-[140px]">{rem.description}</p><div className="flex items-center gap-1 text-slate-400"><Calendar size={10} /> <span className="text-[9px] font-bold">{new Date(rem.date).toLocaleDateString()}</span><span className="w-0.5 h-0.5 bg-slate-200 rounded-full mx-0.5"></span><span className="text-[9px] font-black text-blue-600">{formatCurrency(rem.amount)}</span></div></div>
-                      <div className="flex gap-1.5 shrink-0">
-                        <button onClick={() => handlePayReminder(rem)} className="p-2 bg-emerald-500 text-white rounded-lg shadow-sm hover:scale-105 transition-all"><CheckCircle2 size={14} /></button>
-                        <button onClick={() => handleDeleteReminder(rem.id)} className="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"><Trash2 size={14} /></button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-=======
-               <div className="bg-white p-4 md:p-6 rounded-[1.5rem] border border-slate-100 shadow-sm">
+          {
+            activeView === 'reminders' && (
+              <div className="space-y-4 md:space-y-6 animate-in slide-in-from-bottom-2 duration-500">
+                <div className="bg-white p-4 md:p-6 rounded-[1.5rem] border border-slate-100 shadow-sm">
                   <h2 className="text-base font-black text-slate-800 mb-4">{t.reminders}</h2>
                   <form onSubmit={handleAddReminder} className="grid grid-cols-1 md:grid-cols-3 gap-2 bg-slate-50 p-3 rounded-xl mb-4 border border-slate-100">
                     <input value={remDesc} onChange={(e) => setRemDesc(e.target.value)} placeholder={t.description} className="w-full px-3 py-2.5 bg-white rounded-lg outline-none text-[10px] text-slate-800 placeholder:text-slate-400" required />
@@ -1105,114 +869,48 @@ const App: React.FC = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     {(currentControl?.reminders || []).map(rem => (
                       <div key={rem.id} className="flex items-center justify-between p-3 bg-white border border-slate-100 rounded-xl group hover:shadow-sm transition-all">
-                        <div className="flex flex-col"><p className="font-bold text-slate-800 text-[11px] mb-0.5 truncate max-w-[140px]">{rem.description}</p><div className="flex items-center gap-1 text-slate-400"><Calendar size={10}/> <span className="text-[9px] font-bold">{new Date(rem.date).toLocaleDateString()}</span><span className="w-0.5 h-0.5 bg-slate-200 rounded-full mx-0.5"></span><span className="text-[9px] font-black text-blue-600">{formatCurrency(rem.amount)}</span></div></div>
+                        <div className="flex flex-col"><p className="font-bold text-slate-800 text-[11px] mb-0.5 truncate max-w-[140px]">{rem.description}</p><div className="flex items-center gap-1 text-slate-400"><Calendar size={10} /> <span className="text-[9px] font-bold">{new Date(rem.date).toLocaleDateString()}</span><span className="w-0.5 h-0.5 bg-slate-200 rounded-full mx-0.5"></span><span className="text-[9px] font-black text-blue-600">{formatCurrency(rem.amount)}</span></div></div>
                         <div className="flex gap-1.5 shrink-0">
-                          <button onClick={() => handlePayReminder(rem)} className="p-2 bg-emerald-500 text-white rounded-lg shadow-sm hover:scale-105 transition-all"><CheckCircle2 size={14}/></button>
-                          <button onClick={() => setControls(controls.map(c => c.id === selectedControlId ? {...c, reminders: (c.reminders || []).filter(r => r.id !== rem.id)} : c))} className="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"><Trash2 size={14}/></button>
+                          <button onClick={() => handlePayReminder(rem)} className="p-2 bg-emerald-500 text-white rounded-lg shadow-sm hover:scale-105 transition-all"><CheckCircle2 size={14} /></button>
+                          <button onClick={() => handleDeleteReminder(rem.id)} className="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"><Trash2 size={14} /></button>
                         </div>
                       </div>
                     ))}
                   </div>
-               </div>
->>>>>>> 968574459a05e021635a1331ea57c80743f7b377
-            </div>
-          )}
+                </div>
+              </div>
+            )
+          }
         </main>
       </div>
 
       {/* MODAL DE CONFIGURAÇÕES E PERFIL */}
-      {isSettingsOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md">
-          <div className="bg-white rounded-[2rem] w-full max-w-lg p-5 md:p-8 shadow-2xl animate-in zoom-in overflow-y-auto max-h-[90vh]">
-<<<<<<< HEAD
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="text-lg font-black text-slate-800 flex items-center gap-2">
-                <Settings size={18} className="text-slate-300" /> {t.settings}
-              </h2>
-              <button onClick={() => setIsSettingsOpen(false)} className="p-1.5 text-slate-400 hover:bg-slate-50 rounded-full transition-all"><X size={18} /></button>
-            </div>
-
-            <div className="space-y-6">
-              <div className="space-y-4">
-                <h3 className="text-[9px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
-                  <UserIcon size={12} /> {t.editProfile}
-                </h3>
-                <div className="flex flex-col gap-5 items-center">
-                  <div className="relative group cursor-pointer" onClick={() => fileInputRef.current?.click()}>
-                    <img src={profileAvatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=default'} className="w-20 h-20 md:w-24 md:h-24 rounded-3xl border-2 border-slate-50 object-cover shadow-md" alt="avatar preview" />
-                    <div className="absolute -bottom-2 -right-2 bg-blue-600 p-2 rounded-xl text-white shadow-lg border-2 border-white">
-                      <Camera size={14} />
-                    </div>
-                    <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />
-                  </div>
-                  <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{t.clickToChange}</p>
-
-                  <div className="flex-grow w-full space-y-3">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      <div className="space-y-1">
-                        <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest pl-1">NOME COMPLETO</label>
-                        <input value={profileName} onChange={(e) => setProfileName(e.target.value)} className="w-full px-4 py-2.5 bg-slate-50 border border-slate-100 rounded-xl outline-none text-xs font-bold text-slate-900" />
-                      </div>
-                      <div className="space-y-1">
-                        <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest pl-1">{t.nickname}</label>
-                        <input value={profileNickname} onChange={(e) => setProfileNickname(e.target.value)} className="w-full px-4 py-2.5 bg-slate-50 border border-slate-100 rounded-xl outline-none text-xs font-bold text-slate-900" />
-                      </div>
-                    </div>
-                    <div className="space-y-1">
-                      <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest pl-1">{t.email}</label>
-                      <div className="relative">
-                        <AtSign size={10} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
-                        <input value={profileEmail} onChange={(e) => setProfileEmail(e.target.value)} className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-100 rounded-xl outline-none text-xs font-bold text-slate-900" />
-                      </div>
-                    </div>
-                    <button onClick={handleSaveProfile} className="w-full py-3 bg-emerald-600 text-white rounded-xl font-bold text-[11px] hover:bg-emerald-700 transition-all shadow-md mt-2">
-                      {t.saveProfile}
-                    </button>
-                  </div>
-                </div>
+      {
+        isSettingsOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md">
+            <div className="bg-white rounded-[2rem] w-full max-w-lg p-5 md:p-8 shadow-2xl animate-in zoom-in overflow-y-auto max-h-[90vh]">
+              <div className="flex items-center justify-between mb-5">
+                <h2 className="text-lg font-black text-slate-800 flex items-center gap-2">
+                  <Settings size={18} className="text-slate-300" /> {t.settings}
+                </h2>
+                <button onClick={() => setIsSettingsOpen(false)} className="p-1.5 text-slate-400 hover:bg-slate-50 rounded-full transition-all"><X size={18} /></button>
               </div>
 
-              <div className="h-px bg-slate-50 w-full"></div>
-
-              <div className="space-y-2">
-                <h3 className="text-[9px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
-                  <Languages size={12} /> {t.language}
-                </h3>
-                <div className="grid grid-cols-2 gap-2">
-                  <button onClick={() => setLanguage('pt-BR')} className={`py-2.5 rounded-xl text-[10px] font-bold transition-all border-2 ${language === 'pt-BR' ? 'border-emerald-500 bg-emerald-50 text-emerald-600' : 'border-slate-100 text-slate-400'}`}>Português</button>
-                  <button onClick={() => setLanguage('en-US')} className={`py-2.5 rounded-xl text-[10px] font-bold transition-all border-2 ${language === 'en-US' ? 'border-emerald-500 bg-emerald-50 text-emerald-600' : 'border-slate-100 text-slate-400'}`}>English</button>
-                </div>
-              </div>
-
-              <div className="pt-2">
-                <button onClick={handleLogout} className="w-full py-3.5 bg-red-50 text-red-600 rounded-xl font-bold text-[10px] flex items-center justify-center gap-2 hover:bg-red-100 transition-all">
-                  <LogOut size={14} /> Sair da Conta
-                </button>
-              </div>
-            </div>
-=======
-             <div className="flex items-center justify-between mb-5">
-               <h2 className="text-lg font-black text-slate-800 flex items-center gap-2">
-                 <Settings size={18} className="text-slate-300"/> {t.settings}
-               </h2>
-               <button onClick={() => setIsSettingsOpen(false)} className="p-1.5 text-slate-400 hover:bg-slate-50 rounded-full transition-all"><X size={18} /></button>
-             </div>
-             
-             <div className="space-y-6">
-               <div className="space-y-4">
+              <div className="space-y-6">
+                <div className="space-y-4">
                   <h3 className="text-[9px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
-                    <UserIcon size={12}/> {t.editProfile}
+                    <UserIcon size={12} /> {t.editProfile}
                   </h3>
                   <div className="flex flex-col gap-5 items-center">
                     <div className="relative group cursor-pointer" onClick={() => fileInputRef.current?.click()}>
                       <img src={profileAvatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=default'} className="w-20 h-20 md:w-24 md:h-24 rounded-3xl border-2 border-slate-50 object-cover shadow-md" alt="avatar preview" />
                       <div className="absolute -bottom-2 -right-2 bg-blue-600 p-2 rounded-xl text-white shadow-lg border-2 border-white">
-                        <Camera size={14}/>
+                        <Camera size={14} />
                       </div>
                       <input type="file" ref={fileInputRef} onChange={handleFileChange} accept="image/*" className="hidden" />
                     </div>
                     <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{t.clickToChange}</p>
-                    
+
                     <div className="flex-grow w-full space-y-3">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div className="space-y-1">
@@ -1236,30 +934,30 @@ const App: React.FC = () => {
                       </button>
                     </div>
                   </div>
-               </div>
+                </div>
 
-               <div className="h-px bg-slate-50 w-full"></div>
+                <div className="h-px bg-slate-50 w-full"></div>
 
-               <div className="space-y-2">
-                 <h3 className="text-[9px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
-                    <Languages size={12}/> {t.language}
-                 </h3>
-                 <div className="grid grid-cols-2 gap-2">
-                   <button onClick={() => setLanguage('pt-BR')} className={`py-2.5 rounded-xl text-[10px] font-bold transition-all border-2 ${language === 'pt-BR' ? 'border-emerald-500 bg-emerald-50 text-emerald-600' : 'border-slate-100 text-slate-400'}`}>Português</button>
-                   <button onClick={() => setLanguage('en-US')} className={`py-2.5 rounded-xl text-[10px] font-bold transition-all border-2 ${language === 'en-US' ? 'border-emerald-500 bg-emerald-50 text-emerald-600' : 'border-slate-100 text-slate-400'}`}>English</button>
-                 </div>
-               </div>
+                <div className="space-y-2">
+                  <h3 className="text-[9px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                    <Languages size={12} /> {t.language}
+                  </h3>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button onClick={() => setLanguage('pt-BR')} className={`py-2.5 rounded-xl text-[10px] font-bold transition-all border-2 ${language === 'pt-BR' ? 'border-emerald-500 bg-emerald-50 text-emerald-600' : 'border-slate-100 text-slate-400'}`}>Português</button>
+                    <button onClick={() => setLanguage('en-US')} className={`py-2.5 rounded-xl text-[10px] font-bold transition-all border-2 ${language === 'en-US' ? 'border-emerald-500 bg-emerald-50 text-emerald-600' : 'border-slate-100 text-slate-400'}`}>English</button>
+                  </div>
+                </div>
 
-               <div className="pt-2">
-                 <button onClick={handleLogout} className="w-full py-3.5 bg-red-50 text-red-600 rounded-xl font-bold text-[10px] flex items-center justify-center gap-2 hover:bg-red-100 transition-all">
-                   <LogOut size={14}/> Sair da Conta
-                 </button>
-               </div>
-             </div>
->>>>>>> 968574459a05e021635a1331ea57c80743f7b377
+                <div className="pt-2">
+                  <button onClick={handleLogout} className="w-full py-3.5 bg-red-50 text-red-600 rounded-xl font-bold text-[10px] flex items-center justify-center gap-2 hover:bg-red-100 transition-all">
+                    <LogOut size={14} /> Sair da Conta
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      )}
+        )
+      }
     </div>
   );
 };
