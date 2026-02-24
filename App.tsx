@@ -105,7 +105,9 @@ const translations = {
     filter: 'Filtrar',
     back: 'Voltar',
     email: 'E-mail',
-    clickToChange: 'CLIQUE PARA ALTERAR FOTO'
+    clickToChange: 'CLIQUE PARA ALTERAR FOTO',
+    editProfile: 'Configurações de Perfil',
+    saveProfile: 'Confirmar Alterações'
   },
   'en-US': {
     appTitle: 'Financial Control',
@@ -153,7 +155,9 @@ const translations = {
     filter: 'Filter',
     back: 'Back',
     email: 'Email',
-    clickToChange: 'CLICK TO CHANGE PHOTO'
+    clickToChange: 'CLICK TO CHANGE PHOTO',
+    editProfile: 'Profile Settings',
+    saveProfile: 'Confirm Changes'
   }
 };
 
@@ -672,8 +676,9 @@ const App: React.FC = () => {
               <span className="font-bold text-[10px] text-slate-800 leading-none">{currentUser.name}</span>
             </div>
           </div>
+          <button onClick={() => setIsSettingsOpen(true)} className="p-1.5 text-slate-400 hover:bg-slate-50 rounded-lg transition-all"><Settings size={18} /></button>
+          <button onClick={handleLogout} className="p-1.5 text-slate-400 hover:text-red-500 rounded-lg transition-all"><LogOut size={18} /></button>
         </div>
-        <button onClick={handleLogout} className="p-1.5 text-slate-400 hover:text-red-500 rounded-lg transition-all"><LogOut size={18} /></button>
       </header>
       <main className="max-w-7xl mx-auto px-4 md:px-8 pb-10 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -899,7 +904,7 @@ const App: React.FC = () => {
               <div className="space-y-6">
                 <div className="space-y-4">
                   <h3 className="text-[9px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
-                    <UserIcon size={12} /> {t.editProfile}
+                    <UserIcon size={12} /> {t.editProfile || 'Configurações de Perfil'}
                   </h3>
                   <div className="flex flex-col gap-5 items-center">
                     <div className="relative group cursor-pointer" onClick={() => fileInputRef.current?.click()}>
@@ -912,25 +917,23 @@ const App: React.FC = () => {
                     <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{t.clickToChange}</p>
 
                     <div className="flex-grow w-full space-y-3">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div className="space-y-1">
-                          <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest pl-1">NOME COMPLETO</label>
-                          <input value={profileName} onChange={(e) => setProfileName(e.target.value)} className="w-full px-4 py-2.5 bg-slate-50 border border-slate-100 rounded-xl outline-none text-xs font-bold text-slate-900" />
-                        </div>
-                        <div className="space-y-1">
-                          <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest pl-1">{t.nickname}</label>
-                          <input value={profileNickname} onChange={(e) => setProfileNickname(e.target.value)} className="w-full px-4 py-2.5 bg-slate-50 border border-slate-100 rounded-xl outline-none text-xs font-bold text-slate-900" />
-                        </div>
+                      <div className="space-y-1">
+                        <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest pl-1">NOME COMPLETO</label>
+                        <input value={profileName} onChange={(e) => setProfileName(e.target.value)} className="w-full px-4 py-2.5 bg-slate-50 border border-slate-100 rounded-xl outline-none text-xs font-bold text-slate-900" />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest pl-1">{t.email}</label>
+                        <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest pl-1">APELIDO</label>
+                        <input value={profileNickname} onChange={(e) => setProfileNickname(e.target.value)} className="w-full px-4 py-2.5 bg-slate-50 border border-slate-100 rounded-xl outline-none text-xs font-bold text-slate-900" />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-[8px] font-black text-slate-400 uppercase tracking-widest pl-1">{t.email || 'E-mail'}</label>
                         <div className="relative">
                           <AtSign size={10} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
                           <input value={profileEmail} onChange={(e) => setProfileEmail(e.target.value)} className="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-100 rounded-xl outline-none text-xs font-bold text-slate-900" />
                         </div>
                       </div>
                       <button onClick={handleSaveProfile} className="w-full py-3 bg-emerald-600 text-white rounded-xl font-bold text-[11px] hover:bg-emerald-700 transition-all shadow-md mt-2">
-                        {t.saveProfile}
+                        {t.saveProfile || 'Confirmar Alterações'}
                       </button>
                     </div>
                   </div>
